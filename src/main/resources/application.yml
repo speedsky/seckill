@@ -1,0 +1,47 @@
+server:
+  port: 9413
+
+#解决乱码
+spring:
+  http:
+    encoding:
+      charset: utf-8
+      enabled: true
+      force: true
+  messages:
+    encoding: UTF-8
+  mvc:
+    view:
+      prefix: /WEB-INF/views/ # /表示jsp在webapp目录下   /WEB-INF/views/
+      suffix: .jsp #.jsp结尾的
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource #指定连接池
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/seckill?characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false
+    username: root
+    password: 123456
+    
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
+    password:      # 密码（默认为空）
+    timeout: 6000ms  # 连接超时时长（毫秒）
+    jedis:
+      pool:
+        max-active: 1000  # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: -1ms      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 10      # 连接池中的最大空闲连接
+        min-idle: 5       # 连接池中的最小空闲连接    
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: mybatis/**/*Mapper.xml
+  typeAliasesPackage: com.my.entity
+#去除大量的CONDITIONS EVALUATION REPORT 这个提示
+logging:
+  level:
+    org:
+      springframework:
+        boot:
+          autoconfigure: ERROR 
