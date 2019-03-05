@@ -3,32 +3,30 @@ package com.my.dao.cache;
 import com.dyuproject.protostuff.LinkedBuffer;
 import com.dyuproject.protostuff.ProtobufIOUtil;
 import com.dyuproject.protostuff.runtime.RuntimeSchema;
+
 import com.my.entity.Seckill;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
-
+import org.springframework.stereotype.Repository;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 
 @Configuration
 public class RedisDao {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    private final JedisPool jedisPool;
     
-   
-    public RedisDao() {
-    	
-        jedisPool = new JedisPool("localhost", 6379);
-    }
-
+    @Autowired
+    private JedisPool jedisPool;   
+    
+  
     //protostuff序列化依赖
     private RuntimeSchema<Seckill> schema = RuntimeSchema.createFrom(Seckill.class);
 
@@ -37,7 +35,6 @@ public class RedisDao {
 
         //redis操作逻辑
         try {
-
             Jedis jedis = jedisPool.getResource();
             try {
 
@@ -80,6 +77,7 @@ public class RedisDao {
             try {
 
                 String key = "seckill:" + seckill.getSeckillId();
+                System.out.println(key);
                 //LinkedBuffer：缓存器
                 byte[] bytes = ProtobufIOUtil.toByteArray(seckill, schema,
                         LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE));

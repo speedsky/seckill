@@ -1,7 +1,7 @@
 package com.my.exception;
 
 /**
- * Created by joryun on 2017/4/16.
+ * 
  *
  * 秒杀相关业务异常
  */

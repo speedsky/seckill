@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by joryun on 2017/4/16.
+ * 
  */
 
 //@Component @Service @Dao @Controller
@@ -47,9 +47,8 @@ public class SeckillServiceImpl implements SeckillService {
 
     @Autowired //@Resource
     private SuccessKilledMapper successKilledMapper;
-
-    @Autowired 
-    private RedisDao redisDao ;
+    @Autowired
+    private  RedisDao redisDao;
     
 
     public List<Seckill> getSeckillList() {
@@ -65,11 +64,12 @@ public class SeckillServiceImpl implements SeckillService {
     public Exposer exportSeckillUrl(long seckillId) {
 
         /**
-         * 优化点：缓存优化：超时的基础上维护一致性
+                          * 优化点：缓存优化：超时的基础上维护一致性
          */
 
         //1:访问redis
         Seckill seckill = redisDao.getSeckill(seckillId);
+        System.out.println("getSeckill   "+seckill + "id- " +seckillId);
 
         if (seckill == null) {
             //2:访问数据库
@@ -81,6 +81,7 @@ public class SeckillServiceImpl implements SeckillService {
             } else {
                 //3:放入redis
                 redisDao.putSeckill(seckill);
+                System.out.println("putSeckill   "+seckill + "id- " +seckillId);
             }
         }
 
